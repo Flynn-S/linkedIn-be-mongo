@@ -7,7 +7,11 @@ import {
   getUserExperiences,
   modifyExperience,
   uploadExperiencePic,
+<<<<<<< Updated upstream
 } from '../controllers/experiences.js';
+=======
+} from "../controllers/experiences.js";
+>>>>>>> Stashed changes
 
 const router = Router();
 

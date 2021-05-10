@@ -1,4 +1,13 @@
-import { Router } from 'express';
+import { Router } from "express";
+import {
+  createExperience,
+  deleteExperience,
+  getExperciencesCSV,
+  getSingleExperience,
+  getUserExperiences,
+  modifyExperience,
+  uploadExperiencePic,
+} from "../controllers/experiences.js";
 import {
   createProfile,
   getProfile,
@@ -6,20 +15,38 @@ import {
   getProfiles,
   modifyProfile,
   uploadProfilePic,
-} from '../controllers/profiles.js';
+} from "../controllers/profiles.js";
 
 const router = Router();
 
-router.route('/').get(getProfiles).post(createProfile).put(modifyProfile);
+router.route("/").get(getProfiles).post(createProfile).put(modifyProfile);
 // GET POST AND UPDATE PROFILE
 
-router.route('/:userId').get(getProfile);
+router.route("/:userId").get(getProfile);
 // GET 1 PROFILE WHICH MATCHES USERID
 
-router.route('/:userId/picture').post(uploadProfilePic);
+router.route("/:userId/picture").post(uploadProfilePic);
 // Uploads a profile photo
 
-router.route('/:userId/CV').get(getProfilePdfCV);
+router.route("/:userId/CV").get(getProfilePdfCV);
 //Generates and download a PDF with the CV of the user (details, picture, experiences)
+
+router
+  .route("/userName/experiences")
+  .get(getUserExperiences)
+  .post(createExperience);
+// GET POST AND UPDATE PROFILE
+
+router
+  .route("/userName/experiences/:expId")
+  .get(getSingleExperience)
+  .put(modifyExperience)
+  .delete(deleteExperience);
+
+router.route("/userName/experiences/:expId/picture").post(uploadExperiencePic);
+// Uploads an experience photo
+
+router.route("/userName/experiences/CSV").get(getExperciencesCSV);
+//Download user experiences as a CSV file
 
 export default router;

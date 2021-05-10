@@ -1,4 +1,4 @@
-import ErrorResponse from '../../utils/errorResponse.js';
+import ErrorResponse from '../../utilities/errorResponse.js';
 export const routeNotFoundHandler = (req, res, next) => {
   if (!req.pathname) {
     res.status(404).send({

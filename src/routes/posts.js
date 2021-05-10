@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 import {
   createPost,
   deletePost,
@@ -6,15 +6,15 @@ import {
   getPosts,
   modifyPost,
   uploadPostPic,
-} from "../controllers/posts";
+} from '../controllers/posts.js';
 
 const router = Router();
 
-router.route("/").get(getPosts).post(createPost);
+router.route('/').get(getPosts).post(createPost);
 // GET POST AND CREATE POST
 
 router
-  .route("/:postId")
+  .route('/:postId')
   .get(getPost)
   .put(modifyPost)
   .delete(deletePost)

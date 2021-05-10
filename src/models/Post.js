@@ -11,7 +11,7 @@ export const PostSchema = new Schema(
 );
 
 export default model("Post", PostSchema);
-
+//USER ARRAY SHOULD BE TAKEN FROM PROFILE SCHEMA
 /*{
     "_id": "5d93ac84b86e220017e76ae1", //server generated
     "text": "this is a text 12312 1 3 1",  <<--- THIS IS THE ONLY ONE YOU'LL BE SENDING!!!

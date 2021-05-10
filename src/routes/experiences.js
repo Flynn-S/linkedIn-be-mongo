@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router } from "express";
 import {
   createExperience,
   deleteExperience,
@@ -7,28 +7,24 @@ import {
   getUserExperiences,
   modifyExperience,
   uploadExperiencePic,
-<<<<<<< Updated upstream
-} from '../controllers/experiences.js';
-=======
 } from "../controllers/experiences.js";
->>>>>>> Stashed changes
 
 const router = Router();
 
-router.route('/').get(getUserExperiences).post(createExperience);
+router.route("/").get(getUserExperiences).post(createExperience);
 // GET POST AND UPDATE PROFILE
 
 router
-  .route('/:expId')
+  .route("/:expId")
   .get(getSingleExperience)
   .put(modifyExperience)
   .delete(deleteExperience);
 // GET 1 PROFILE WHICH MATCHES USERID
 
-router.route('/:expId/picture').post(uploadExperiencePic);
+router.route("/:expId/picture").post(uploadExperiencePic);
 // Uploads an experience photo
 
-router.route('/CSV').get(getExperciencesCSV);
+router.route("/CSV").get(getExperciencesCSV);
 //Download user experiences as a CSV file
 
 export default router;

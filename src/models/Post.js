@@ -3,9 +3,13 @@ const { Schema, model } = mongoose;
 export const PostSchema = new Schema(
   {
     text: { type: String, required: true },
-    username: { type: String, required: true },
-    user: Array,
-    image: "default.png",
+    username: { type: String },
+    user: { type: Schema.Types.ObjectId, required: true, ref: "Profile" },
+    image: {
+      type: String,
+      default:
+        "https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg",
+    },
   },
   { timestamps: true }
 );

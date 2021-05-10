@@ -2,12 +2,18 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 export const ExperienceSchema = new Schema(
   {
-    role: String,
-    company: String,
-    description: String,
-    area: String,
-    username: String,
-    image: "default.png",
+    role: { type: String },
+    company: { type: String },
+    startDate: { type: Date },
+    endDate: { type: Date },
+    description: { type: String },
+    area: { type: String },
+    username: { type: String },
+    image: {
+      type: String,
+      default:
+        "https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg",
+    },
   },
   { timestamps: true }
 );

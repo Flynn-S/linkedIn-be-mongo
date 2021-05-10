@@ -5,11 +5,16 @@ export const ProfileSchema = new Schema(
     name: { type: String, required: true },
     surname: { type: String, required: true },
     email: { type: String, required: true },
-    bio: String,
-    title: String,
-    image: "default.png",
-    area: String,
-    username: String,
+    bio: { type: String },
+    title: { type: String },
+    image: {
+      type: String,
+      default:
+        "https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg",
+    },
+    area: { type: String },
+    username: { type: String },
+    experiences: [{ type: Schema.Types.ObjectId, ref: "Experience" }],
   },
   { timestamps: true }
 );

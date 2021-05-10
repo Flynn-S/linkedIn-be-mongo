@@ -6,7 +6,11 @@ import {
   getPosts,
   modifyPost,
   uploadPostPic,
+<<<<<<< Updated upstream
 } from '../controllers/posts.js';
+=======
+} from "../controllers/posts.js";
+>>>>>>> Stashed changes
 
 const router = Router();
 

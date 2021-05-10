@@ -1,18 +1,22 @@
-import express from "express";
-import cors from "cors";
-import listEndpoints from "express-list-endpoints";
-import mongoose from "mongoose";
+import express from 'express';
+import cors from 'cors';
+import listEndpoints from 'express-list-endpoints';
+import mongoose from 'mongoose';
+import profilesRoutes from './routes/profiles.js';
+import postsRoutes from './routes/posts.js';
+import experiencesRoutes from './routes/experiences.js';
 
 const { connect } = mongoose;
 
 import {
   errorHandler,
   routeNotFoundHandler,
-} from "./middlewares/errors/errorHandling.js";
+} from './middlewares/errors/errorHandling.js';
 
-import ErrorResponse from "./utilities/errorResponse";
+import ErrorResponse from './utilities/errorResponse';
 
-const server = express();
+const app = express();
+app.use(morgan('dev'));
 
 //   const whiteList = [process.env.FE_URL_DEV, process.env.FE_URL_PROD];
 //   // da configurare anke su heroku
@@ -30,12 +34,14 @@ const server = express();
 //     },
 //   };
 
-app.use("/", homeRoute);
-
 app.use(cors());
 // app.use(cors(corsOptions));
 
 app.use(express.json());
+
+app.use('api/profile', profilesRoutes);
+app.use('api/experience', experiencesRoutes);
+app.use('api/posts', postsRoutes);
 
 app.use(routeNotFoundHandler);
 app.use(errorHandler);

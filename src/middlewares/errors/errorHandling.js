@@ -10,7 +10,10 @@ export const routeNotFoundHandler = (req, res, next) => {
   }
 };
 export const errorHandler = async (err, req, res, next) => {
-  console.log(err);
+  //loggo console for dev
+  // console.log(err.stack.red); // => stack dell'errore e messaggio
+  console.log(err.name);
+
   let error = { ...err };
   error.message = err.message;
   //mongoose bad object id
@@ -18,11 +21,23 @@ export const errorHandler = async (err, req, res, next) => {
     const message = `resource not found with id of ${err.value}`;
     error = new ErrorResponse(message, 404);
   }
-  if (err.message.includes('validation failed')) {
-    return res.status(400).send({ success: false, error: err.message });
+
+  // Mongoose duplicate keys => mi posta una field unique
+  if (err.code === 11000) {
+    const message = `Duplicate field value entered: ${
+      Object.keys(err.keyValue)[0]
+    }: ${Object.values(err.keyValue)[0]}`;
+    error = new ErrorResponse(message, 400);
   }
 
-  res.status(error.statusCode || 500).send({
+  //Mongoose validation error => bad request => errori nello schema
+  if (err.name === 'ValidationError') {
+    const message = Object.values(err.errors).map((val) => val.message);
+    error = new ErrorResponse(message, 400);
+    console.log(error);
+  }
+
+  res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || 'internal server error',
   });

@@ -14,20 +14,23 @@ export const getPosts = asyncHandler(async (req, res, next) => {
 export const createPost = asyncHandler(async (req, res, next) => {
   const { username, text } = req.body;
   const user = await ProfileModel.findOne({ username: username });
-  console.log(user._id);
   const newPost = await PostModel.create({
     text: text,
     username: username,
     profile: user._id,
   });
-  console.log(newPost);
+  res.status(200).send(newPost);
 });
 
 // - GET https://yourapi.herokuapp.com/api/posts/:postId
 // Retrieves the specified post
 export const getPost = asyncHandler(async (req, res, next) => {
   const post = await PostModel.findById(req.params.postId);
-  res.status(200).send(post);
+  if (post) {
+    res.status(200).send(post);
+  } else {
+    res.status(404).send(`Post with id ${req.params.postId} does not exist`);
+  }
 });
 
 // - PUT https://yourapi.herokuapp.com/api/posts/:postId
@@ -46,9 +49,9 @@ export const modifyPost = asyncHandler(async (req, res, next) => {
 export const deletePost = asyncHandler(async (req, res, next) => {
   const post = await PostModel.findByIdAndDelete(req.params.postId);
   if (post) {
-    res.status(204).send();
+    res.send(`Post deleted`);
   } else {
-    console.log(`Post with id ${req.params.postId} not found`);
+    res.status(404).send(`Post with id ${req.params.postId} not found`);
   }
 });
 

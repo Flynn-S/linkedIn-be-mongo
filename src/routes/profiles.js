@@ -16,6 +16,8 @@ import {
   modifyProfile,
   uploadProfilePic,
 } from '../controllers/profiles.js';
+import multerUpload from '../middlewares/pictures/pictureUpload.js';
+const upload = multerUpload();
 
 const router = Router();
 
@@ -25,7 +27,7 @@ router.route('/').get(getProfiles).post(createProfile);
 router.route('/:profileId').get(getProfile).put(modifyProfile);
 // GET 1 PROFILE WHICH MATCHES USERID
 
-router.route('/:profileId/picture').post(uploadProfilePic);
+router.route('/:profileId/picture').post(upload, uploadProfilePic);
 // Uploads a profile photo
 
 router.route('/:profileId/CV').get(getProfilePdfCV);

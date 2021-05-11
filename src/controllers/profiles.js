@@ -43,10 +43,27 @@ export const modifyProfile = asyncHandler(async (req, res, next) => {
   res.status(200).send(modified);
 });
 
-// - POST https://yourapi.herokuapp.com/api/profile/{userId}/picture
+// - POST https://yourapi.herokuapp.com/api/profile/:profileId/picture
 // Replace user profile picture (name = profile)
-export const uploadProfilePic = asyncHandler(async (req, res, next) => {});
+export const uploadProfilePic = asyncHandler(async (req, res, next) => {
+  const modified = await Profile.findByIdAndUpdate(
+    req.params.profileId,
+    {
+      image: req.file.path,
+    },
+    { runValidators: true, new: true }
+  );
+  res.status(200).send(modified);
+});
 
-// - GET https://yourapi.herokuapp.com/api/profile/{userId}/CV
+// - GET https://yourapi.herokuapp.com/api/profile/:profileId/CV
 // Generates and download a PDF with the CV of the user (details, picture, experiences)
-export const getProfilePdfCV = asyncHandler(async (req, res, next) => {});
+export const getProfilePdfCV = asyncHandler(async (req, res, next) => {
+  //find the object and populate it
+  const data = await Profile.findById(req.params.profileId).populate({
+    path: 'experiences',
+    model: Experience,
+  });
+
+  res.status(200).send(data);
+});

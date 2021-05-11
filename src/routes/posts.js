@@ -7,6 +7,8 @@ import {
   modifyPost,
   uploadPostPic,
 } from '../controllers/posts.js';
+import multerUpload from '../middlewares/pictures/pictureUpload.js';
+const upload = multerUpload();
 
 const router = Router();
 
@@ -18,7 +20,7 @@ router
   .get(getPost)
   .put(modifyPost)
   .delete(deletePost)
-  .post(uploadPostPic);
+  .post(upload, uploadPostPic);
 // GET singular Post // edit post // delete post // upload post picture
 
 export default router;

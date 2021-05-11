@@ -12,7 +12,7 @@ export const routeNotFoundHandler = (req, res, next) => {
 export const errorHandler = async (err, req, res, next) => {
   //loggo console for dev
   // console.log(err.stack.red); // => stack dell'errore e messaggio
-  console.log(err.name);
+  console.log(err);
 
   let error = { ...err };
   error.message = err.message;

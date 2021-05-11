@@ -19,10 +19,10 @@ import {
 
 const router = Router();
 
-router.route('/').get(getProfiles).post(createProfile).put(modifyProfile);
+router.route('/').get(getProfiles).post(createProfile);
 // GET POST AND UPDATE PROFILE
 
-router.route('/:profileId').get(getProfile);
+router.route('/:profileId').get(getProfile).put(modifyProfile);
 // GET 1 PROFILE WHICH MATCHES USERID
 
 router.route('/:profileId/picture').post(uploadProfilePic);

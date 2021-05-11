@@ -15,6 +15,9 @@ export const getProfile = asyncHandler(async (req, res, next) => {
     path: 'experiences',
     model: Experience,
   });
+  if (!modified) {
+    return next(new ErrorResponse(`resource not found with that id`, 404));
+  }
   res.status(200).send(profile);
 });
 
@@ -26,9 +29,19 @@ export const createProfile = asyncHandler(async (req, res, next) => {
   res.status(201).send({ _id });
 });
 
-// - PUT https://yourapi.herokuapp.com/api/profile/
+// - PUT https://yourapi.herokuapp.com/api/profile/:profileId
 // Update current user profile details
-export const modifyProfile = asyncHandler(async (req, res, next) => {});
+export const modifyProfile = asyncHandler(async (req, res, next) => {
+  const modified = await Profile.findByIdAndUpdate(
+    req.params.profileId,
+    req.body,
+    { runValidators: true, new: true }
+  );
+  if (!modified) {
+    return next(new ErrorResponse(`resource not found with that id`, 404));
+  }
+  res.status(200).send(modified);
+});
 
 // - POST https://yourapi.herokuapp.com/api/profile/{userId}/picture
 // Replace user profile picture (name = profile)

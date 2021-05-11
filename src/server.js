@@ -1,22 +1,22 @@
-import express from "express";
-import cors from "cors";
-import listEndpoints from "express-list-endpoints";
-import mongoose from "mongoose";
-import profilesRoutes from "./routes/profiles.js";
-import postsRoutes from "./routes/posts.js";
-import morgan from "morgan";
+import express from 'express';
+import cors from 'cors';
+import listEndpoints from 'express-list-endpoints';
+import mongoose from 'mongoose';
+import profilesRoutes from './routes/profiles.js';
+import postsRoutes from './routes/posts.js';
+import morgan from 'morgan';
 
 const { connect } = mongoose;
 
 import {
   errorHandler,
   routeNotFoundHandler,
-} from "./middlewares/errors/errorHandling.js";
+} from './middlewares/errors/errorHandling.js';
 
-import ErrorResponse from "./utilities/errorResponse.js";
+import ErrorResponse from './utilities/errorResponse.js';
 
 const app = express();
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
 //   const whiteList = [process.env.FE_URL_DEV, process.env.FE_URL_PROD];
 //   // da configurare anke su heroku
@@ -39,16 +39,16 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use("/api/profile", profilesRoutes);
+app.use('/api/profile', profilesRoutes);
 // app.use('/api/experience', experiencesRoutes);
-app.use("/api/posts", postsRoutes);
+app.use('/api/posts', postsRoutes);
 
 app.use(routeNotFoundHandler);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-console.table(listEndpoints(app));
+// console.table(listEndpoints(app));
 
 connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
@@ -58,11 +58,11 @@ connect(process.env.MONGO_CONNECTION, {
 })
   .then(() => {
     app.listen(PORT, () => {
-      if (process.env.NODE_ENV === "production") {
+      if (process.env.NODE_ENV === 'production') {
         // no need to configure it manually on Heroku
-        console.log("Server running on cloud on port: ", PORT);
+        console.log('Server running on cloud on port: ', PORT);
       } else {
-        console.log("Server running locally on port: ", PORT);
+        console.log('Server running locally on port: ', PORT);
       }
     });
   })

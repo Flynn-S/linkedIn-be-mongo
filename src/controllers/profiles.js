@@ -5,13 +5,17 @@ import asyncHandler from '../utilities/asyncHandler.js';
 // Retrieves list of profiles
 export const getProfiles = asyncHandler(async (req, res, next) => {
   const profiles = await Profile.find({}, { experiences: 0 });
-
   res.status(200).send(profiles);
 });
 
-// - GET https://yourapi.herokuapp.com/api/profile/{userId}
-// Retrieves the profile with userId = {userId}
-export const getProfile = asyncHandler(async (req, res, next) => {});
+// - GET https://yourapi.herokuapp.com/api/profile/:profileId
+// Retrieves the profile with userId = :profileId
+export const getProfile = asyncHandler(async (req, res, next) => {
+  const profile = await Profile.findById(req.params.profileId).populate(
+    'experiences'
+  );
+  res.status(200).send(profile);
+});
 
 // - POST https://yourapi.herokuapp.com/api/profile/
 // Create the user profile with all his details

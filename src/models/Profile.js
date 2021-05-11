@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
-export const ProfileSchema = new Schema(
+const ProfileSchema = new Schema(
   {
     name: { type: String, required: true },
     surname: { type: String, required: true },

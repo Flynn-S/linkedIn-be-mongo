@@ -1,20 +1,35 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 export const PostSchema = new Schema(
   {
     text: { type: String, required: true },
     username: { type: String },
-    profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
+    profile: { type: Schema.Types.ObjectId, required: true, ref: "Profile" },
     image: {
       type: String,
       default:
-        'https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg',
+        "https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg",
     },
   },
   { timestamps: true }
 );
 
-export default model('Post', PostSchema);
+export default model("Post", PostSchema);
+
+/*
+TEXT USERNAME USER ID
+PASS IN BODY THE TEXT; USERNAME
+FIND OBJECT ID, EXTRACT THE USERNAME AND TEXT FROM REQ.BODY THEN WITH USERNAME PERFORM A QUERY ON PROFILE SO YOU GOT BACK THE PROFILE WITH THAT USERNAME FROM THAT PROFILE YOU GET ID = PROFILE
+NOW YOU HAVE THE TEXT USER AND ID(PROFILE) 
+POST CREATE; PAST AN OBJECT TEXT USERNAME, PRofile will be id
+
+const {username, text}= req.body
+userrname => query on profile => profile with that username and
+{_id} = profile 
+Post.create {{text: text,username: username,profile: id}}
+
+
+
 //USER ARRAY SHOULD BE TAKEN FROM PROFILE SCHEMA
 /*{
     "_id": "5d93ac84b86e220017e76ae1", //server generated

@@ -21,8 +21,9 @@ export const getProfile = asyncHandler(async (req, res, next) => {
 // - POST https://yourapi.herokuapp.com/api/profile/
 // Create the user profile with all his details
 export const createProfile = asyncHandler(async (req, res, next) => {
-  const profiles = await Profile.create(req.body);
-  res.send('ok');
+  const profile = await Profile.create(req.body);
+  const { _id } = profile;
+  res.status(201).send({ _id });
 });
 
 // - PUT https://yourapi.herokuapp.com/api/profile/

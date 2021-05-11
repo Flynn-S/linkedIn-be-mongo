@@ -34,7 +34,10 @@ export const getPost = asyncHandler(async (req, res, next) => {
 // Edit a given post
 export const modifyPost = asyncHandler(async (req, res, next) => {
   const newPost = { ...req.body };
-  const post = await PostModel.findByIdAndUpdate(req.params.postId, newPost);
+  const post = await PostModel.findByIdAndUpdate(req.params.postId, newPost, {
+    runValidators: true,
+    new: true,
+  });
   res.send(post);
 });
 
@@ -52,16 +55,15 @@ export const deletePost = asyncHandler(async (req, res, next) => {
 // - POST https://yourapi.herokuapp.com/api/posts/:postId
 // Add an image to the post under the name of "post"
 export const uploadPostPic = asyncHandler(async (req, res, next) => {
-  const formData = new FormData();
-  formData.append("post", file);
-  const url = `http://localhost:3001/api/posts/${postID}`;
-  const response = await fetch(url, {
-    method: "POST",
-    body: formData,
-    headers: { Authorization: auth },
-  });
-
-  //   if (response.ok) {
-  //     return;
-  //   }
+  const modPost = await PostModel.findByIdAndUpdate(
+    req.params.postId,
+    {
+      image: req.file.path,
+    },
+    {
+      runValidators: true,
+      new: true,
+    }
+  );
+  res.send(modPost);
 });

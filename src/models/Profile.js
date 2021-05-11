@@ -1,25 +1,41 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
+import bcrypt from 'bcryptjs';
 export const ProfileSchema = new Schema(
   {
     name: { type: String, required: true },
     surname: { type: String, required: true },
-    email: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please add a valid email',
+      ],
+    },
     bio: { type: String },
     title: { type: String },
     image: {
       type: String,
       default:
-        "https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg",
+        'https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg',
     },
+    password: {
+      type: String,
+      required: [true, 'Please add a Password'],
+      minlength: 6,
+      select: false, //doesnt show the password when fetching profile
+    },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
+
     area: { type: String },
     username: { type: String },
-    experiences: [{ type: Schema.Types.ObjectId, ref: "Experience" }],
+    experiences: [{ type: Schema.Types.ObjectId, ref: 'Experience' }],
   },
   { timestamps: true }
 );
-
-export default model("Profile", ProfileSchema);
 
 /*{
     "_id": "5d84937322b7b54d848eb41b", //server generated
@@ -34,3 +50,15 @@ export default model("Profile", ProfileSchema);
     "createdAt": "2019-09-20T08:53:07.094Z", //server generated
     "updatedAt": "2019-09-20T09:00:46.977Z", //server generated
 }*/
+
+// encrypt password using bcrypt
+ProfileSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Sign JWT and return
+ProfileSchema.methods.getSignedJwtToken = function () {};
+
+export default model('Profile', ProfileSchema);

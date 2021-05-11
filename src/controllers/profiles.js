@@ -1,6 +1,6 @@
 import Profile from '../models/Profile.js';
 import asyncHandler from '../utilities/asyncHandler.js';
-
+import Experience from '../models/Experience.js';
 // - GET https://yourapi.herokuapp.com/api/profile/
 // Retrieves list of profiles
 export const getProfiles = asyncHandler(async (req, res, next) => {
@@ -11,16 +11,17 @@ export const getProfiles = asyncHandler(async (req, res, next) => {
 // - GET https://yourapi.herokuapp.com/api/profile/:profileId
 // Retrieves the profile with userId = :profileId
 export const getProfile = asyncHandler(async (req, res, next) => {
-  const profile = await Profile.findById(req.params.profileId).populate(
-    'experiences'
-  );
+  const profile = await Profile.findById(req.params.profileId).populate({
+    path: 'experiences',
+    model: Experience,
+  });
   res.status(200).send(profile);
 });
 
 // - POST https://yourapi.herokuapp.com/api/profile/
 // Create the user profile with all his details
 export const createProfile = asyncHandler(async (req, res, next) => {
-  const profiles = await Profile.insertMany(req.body);
+  const profiles = await Profile.create(req.body);
   res.send('ok');
 });
 

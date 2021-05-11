@@ -1,6 +1,8 @@
 import Profile from '../models/Profile.js';
 import asyncHandler from '../utilities/asyncHandler.js';
 import Experience from '../models/Experience.js';
+import { generatePdf } from '../utilities/pdf.js';
+import { pipeline } from 'stream';
 // - GET https://yourapi.herokuapp.com/api/profile/
 // Retrieves list of profiles
 export const getProfiles = asyncHandler(async (req, res, next) => {
@@ -64,6 +66,9 @@ export const getProfilePdfCV = asyncHandler(async (req, res, next) => {
     path: 'experiences',
     model: Experience,
   });
-
-  res.status(200).send(data);
+  const sourceStream = await generatePdf(data);
+  // res.attachment(`${data.name} ${data.surname} CV.pdf`);
+  res.setHeader('content-type', 'application/pdf');
+  pipeline(sourceStream, res, () => console.log('done'));
+  // res.status(200).send(data);
 });

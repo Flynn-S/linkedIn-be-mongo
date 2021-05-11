@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 export const ProfileSchema = new Schema(
   {
@@ -10,16 +10,16 @@ export const ProfileSchema = new Schema(
     image: {
       type: String,
       default:
-        "https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg",
+        'https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg',
     },
     area: { type: String },
     username: { type: String },
-    experiences: [{ type: Schema.Types.ObjectId, ref: "Experience" }],
+    experiences: [{ type: Schema.Types.ObjectId, ref: 'Experience' }],
   },
   { timestamps: true }
 );
 
-export default model("Profile", ProfileSchema);
+export default model('Profile', ProfileSchema);
 
 /*{
     "_id": "5d84937322b7b54d848eb41b", //server generated

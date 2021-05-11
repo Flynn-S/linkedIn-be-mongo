@@ -4,7 +4,9 @@ import asyncHandler from '../utilities/asyncHandler.js';
 // - GET https://yourapi.herokuapp.com/api/profile/
 // Retrieves list of profiles
 export const getProfiles = asyncHandler(async (req, res, next) => {
-  res.send('hi');
+  const profiles = await Profile.find({}, { experiences: 0 });
+
+  res.status(200).send(profiles);
 });
 
 // - GET https://yourapi.herokuapp.com/api/profile/{userId}

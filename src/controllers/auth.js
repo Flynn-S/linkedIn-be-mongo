@@ -17,9 +17,9 @@ export const register = asyncHandler(async (req, res, next) => {
   });
 
   //create token
-  const token = user.getSignedJwtToken();
-
-  res.status(200).send({ success: true, token });
+  // const token = user.getSignedJwtToken();
+  // res.status(200).send({ success: true, token });
+  sendTokenResponse(user, 200, res);
 });
 
 // login user
@@ -48,7 +48,29 @@ export const login = asyncHandler(async (req, res, next) => {
   }
 
   //create token
+  // const token = user.getSignedJwtToken();
+  // res.status(200).send({ success: true, token });
+  sendTokenResponse(user, 200, res);
+});
+
+// Get token from model, create cookie and send response
+const sendTokenResponse = (user, statusCode, res) => {
+  //create token
   const token = user.getSignedJwtToken();
 
-  res.status(200).send({ success: true, token });
-});
+  //create cookie
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ), // => 30 days from now
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') {
+    options.secure = true; // => send cookie with https in production
+  }
+
+  res
+    .status(statusCode)
+    .cookie('token', token, options)
+    .send({ success: true, token });
+};

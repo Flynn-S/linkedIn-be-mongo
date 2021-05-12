@@ -1,9 +1,13 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import listEndpoints from 'express-list-endpoints';
 import mongoose from 'mongoose';
 import profilesRoutes from './routes/profiles.js';
 import postsRoutes from './routes/posts.js';
+
+import authRoutes from './routes/auth.js';
+
 import morgan from 'morgan';
 
 const { connect } = mongoose;
@@ -35,9 +39,15 @@ app.use(morgan('dev'));
 //   };
 
 app.use(cors());
+
 // app.use(cors(corsOptions));
 
 app.use(express.json());
+
+// read cookies
+app.use(cookieParser());
+
+app.use('/api/auth', authRoutes);
 
 app.use('/api/profile', profilesRoutes);
 // app.use('/api/experience', experiencesRoutes);

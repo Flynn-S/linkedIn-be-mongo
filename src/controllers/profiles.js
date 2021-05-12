@@ -1,8 +1,17 @@
 import Profile from '../models/Profile.js';
 import asyncHandler from '../utilities/asyncHandler.js';
+
 import Experience from '../models/Experience.js';
 import { generatePdf } from '../utilities/pdf.js';
 import { pipeline } from 'stream';
+
+// - GET https://yourapi.herokuapp.com/api/profile/me
+// Retrieves current logged user
+export const getLoggedUser = asyncHandler(async (req, res, next) => {
+  const user = await Profile.findById(req.user.id);
+  res.send(user);
+});
+
 // - GET https://yourapi.herokuapp.com/api/profile/
 // Retrieves list of profiles
 export const getProfiles = asyncHandler(async (req, res, next) => {

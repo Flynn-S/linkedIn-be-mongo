@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+const { Schema, model } = mongoose;
 export const ProfileSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -59,6 +60,10 @@ ProfileSchema.pre('save', async function (next) {
 });
 
 // Sign JWT and return
-ProfileSchema.methods.getSignedJwtToken = function () {};
+ProfileSchema.methods.getSignedJwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+};
 
 export default model('Profile', ProfileSchema);

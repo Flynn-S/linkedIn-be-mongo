@@ -7,7 +7,7 @@ import ErrorResponse from '../utilities/errorResponse.js';
 // access user
 
 export const register = asyncHandler(async (req, res, next) => {
-  const { name, email, password, surname } = req.body;
+  const { name, surname, email, password } = req.body;
 
   //create user
   const user = await Profile.create({
@@ -17,5 +17,8 @@ export const register = asyncHandler(async (req, res, next) => {
     password,
   });
 
-  res.status(200).send({ success: true });
+  //create token
+  const token = user.getSignedJwtToken();
+
+  res.status(200).send({ success: true, token });
 });

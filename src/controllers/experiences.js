@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import ExperienceModel from "../models/Experience.js";
 import ProfileModel from "../models/Profile.js";
 import ErrorResponse from "../utilities/errorResponse.js";
+import { createCSV } from "../utilities/csv.js";
 
 // - GET https://yourapi.herokuapp.com/api/profile/:profileId/experiences
 // Get user experiences
@@ -93,4 +94,12 @@ export const uploadExperiencePic = asyncHandler(async (req, res, next) => {});
 
 // - GET https://yourapi.herokuapp.com/api/profile/userName/experiences/CSV
 // Download the experiences as a CSV
-export const getExperciencesCSV = asyncHandler(async (req, res, next) => {});
+export const getExperciencesCSV = asyncHandler(async (req, res, next) => {
+  const allUserExperiences = await ExperienceModel.find({
+    profileId: { $eq: req.params.profileId },
+  });
+
+  res.attachment("experience.csv");
+
+  await createCSV(res, allUserExperiences);
+});

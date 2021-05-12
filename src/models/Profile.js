@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -9,8 +8,6 @@ const ProfileSchema = new Schema(
   {
     name: { type: String, required: true },
     surname: { type: String, required: true },
-
-
 
     email: {
       type: String,
@@ -44,11 +41,6 @@ const ProfileSchema = new Schema(
   },
   { timestamps: true }
 );
-
-
-export default model('Profile', ProfileSchema);
-
-
 
 /*{
     "_id": "5d84937322b7b54d848eb41b", //server generated

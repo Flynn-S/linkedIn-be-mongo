@@ -47,7 +47,21 @@ export const getSingleExperience = asyncHandler(async (req, res, next) => {
 
 // - PUT https://yourapi.herokuapp.com/api/profile/:profileId/experiences/:expId
 // Edit a specific experience
-export const modifyExperience = asyncHandler(async (req, res, next) => {});
+export const modifyExperience = asyncHandler(async (req, res, next) => {
+  const modifiedExperience = await ExperienceModel.findOneAndUpdate(
+    {
+      _id: mongoose.Types.ObjectId(req.params.expId),
+    },
+    req.body,
+    {
+      runValidators: true,
+      new: true,
+    }
+  );
+  if (modifiedExperience) {
+    res.status(201).send(modifiedExperience);
+  }
+});
 
 // - DELETE https://yourapi.herokuapp.com/api/profile/:profileId/experiences/:expId
 // Delete a specific experience

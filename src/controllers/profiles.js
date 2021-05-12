@@ -1,4 +1,12 @@
+import Profile from '../models/Profile.js';
 import asyncHandler from '../utilities/asyncHandler.js';
+
+// - GET https://yourapi.herokuapp.com/api/profile/me
+// Retrieves current logged user
+export const getLoggedUser = asyncHandler(async (req, res, next) => {
+  const user = await Profile.findById(req.user.id);
+  res.send(user);
+});
 
 // - GET https://yourapi.herokuapp.com/api/profile/
 // Retrieves list of profiles

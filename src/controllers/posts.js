@@ -5,10 +5,12 @@ import ProfileModel from '../models/Profile.js';
 //  - GET https://yourapi.herokuapp.com/api/posts/
 // Retrieve posts
 export const getPosts = asyncHandler(async (req, res, next) => {
-  const posts = await PostModel.find().populate({
-    path: 'profile',
-    model: ProfileModel,
-  });
+  const posts = await PostModel.find()
+    .populate({
+      path: 'profile',
+      model: ProfileModel,
+    })
+    .sort({ createdAt: -1 });
   res.send(posts);
 });
 

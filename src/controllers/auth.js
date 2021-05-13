@@ -15,7 +15,7 @@ export const register = asyncHandler(async (req, res, next) => {
     email,
     password,
   });
-
+  console.log(user);
   //create token
   // const token = user.getSignedJwtToken();
   // res.status(200).send({ success: true, token });
@@ -69,8 +69,5 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true; // => send cookie with https in production
   }
 
-  res
-    .status(statusCode)
-    .cookie('token', token, options)
-    .send({ success: true, token });
+  res.status(statusCode).send({ success: true, token });
 };

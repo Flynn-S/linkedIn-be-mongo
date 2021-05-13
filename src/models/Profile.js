@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 const { Schema, model } = mongoose;
 const ProfileSchema = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, trim: true, required: true },
     surname: { type: String, required: true },
 
     email: {

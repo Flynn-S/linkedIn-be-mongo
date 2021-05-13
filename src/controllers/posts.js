@@ -1,11 +1,14 @@
-import asyncHandler from "../utilities/asyncHandler.js";
-import PostModel from "../models/Post.js";
-import ProfileModel from "../models/Profile.js";
+import asyncHandler from '../utilities/asyncHandler.js';
+import PostModel from '../models/Post.js';
+import ProfileModel from '../models/Profile.js';
 
 //  - GET https://yourapi.herokuapp.com/api/posts/
 // Retrieve posts
 export const getPosts = asyncHandler(async (req, res, next) => {
-  const posts = await PostModel.find();
+  const posts = await PostModel.find().populate({
+    path: 'profile',
+    model: ProfileModel,
+  });
   res.send(posts);
 });
 

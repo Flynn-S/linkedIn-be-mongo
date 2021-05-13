@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import ExperienceModel from "../models/Experience.js";
 import ProfileModel from "../models/Profile.js";
 import ErrorResponse from "../utilities/errorResponse.js";
+import { createCSV } from "../utilities/csv.js";
 
 // - GET https://yourapi.herokuapp.com/api/profile/:profileId/experiences
 // Get user experiences
@@ -47,7 +48,21 @@ export const getSingleExperience = asyncHandler(async (req, res, next) => {
 
 // - PUT https://yourapi.herokuapp.com/api/profile/:profileId/experiences/:expId
 // Edit a specific experience
-export const modifyExperience = asyncHandler(async (req, res, next) => {});
+export const modifyExperience = asyncHandler(async (req, res, next) => {
+  const modifiedExperience = await ExperienceModel.findOneAndUpdate(
+    {
+      _id: mongoose.Types.ObjectId(req.params.expId),
+    },
+    req.body,
+    {
+      runValidators: true,
+      new: true,
+    }
+  );
+  if (modifiedExperience) {
+    res.status(201).send(modifiedExperience);
+  }
+});
 
 // - DELETE https://yourapi.herokuapp.com/api/profile/:profileId/experiences/:expId
 // Delete a specific experience
@@ -79,4 +94,12 @@ export const uploadExperiencePic = asyncHandler(async (req, res, next) => {});
 
 // - GET https://yourapi.herokuapp.com/api/profile/userName/experiences/CSV
 // Download the experiences as a CSV
-export const getExperciencesCSV = asyncHandler(async (req, res, next) => {});
+export const getExperciencesCSV = asyncHandler(async (req, res, next) => {
+  const allUserExperiences = await ExperienceModel.find({
+    profileId: { $eq: req.params.profileId },
+  });
+
+  res.attachment("experience.csv");
+
+  await createCSV(res, allUserExperiences);
+});

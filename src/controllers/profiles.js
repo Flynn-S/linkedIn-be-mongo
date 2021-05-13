@@ -77,7 +77,7 @@ export const getProfilePdfCV = asyncHandler(async (req, res, next) => {
   });
   const sourceStream = await generatePdf(data);
   res.attachment(`${data.name} ${data.surname} CV.pdf`);
-  res.setHeader('content-type', 'application/pdf');
+  // res.setHeader('Content-Type', 'application/pdf');
   pipeline(sourceStream, res, () => console.log('done'));
   // res.status(200).send(data);
 });

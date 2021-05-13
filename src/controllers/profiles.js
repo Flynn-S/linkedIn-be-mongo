@@ -26,9 +26,9 @@ export const getProfile = asyncHandler(async (req, res, next) => {
     path: 'experiences',
     model: Experience,
   });
-  if (!modified) {
-    return next(new ErrorResponse(`resource not found with that id`, 404));
-  }
+  // if (!modified) {
+  //   return next(new ErrorResponse(`resource not found with that id`, 404));
+  // }
   res.status(200).send(profile);
 });
 

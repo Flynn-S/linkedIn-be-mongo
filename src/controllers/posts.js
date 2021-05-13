@@ -1,6 +1,7 @@
 import asyncHandler from '../utilities/asyncHandler.js';
 import PostModel from '../models/Post.js';
 import ProfileModel from '../models/Profile.js';
+import mongoose from 'mongoose';
 
 //  - GET https://yourapi.herokuapp.com/api/posts/
 // Retrieve posts
@@ -17,12 +18,11 @@ export const getPosts = asyncHandler(async (req, res, next) => {
 // - POST https://yourapi.herokuapp.com/api/posts/
 // Creates a new post
 export const createPost = asyncHandler(async (req, res, next) => {
-  const { username, text } = req.body;
-  const user = await ProfileModel.findOne({ username: username });
+  const { profileId, text } = req.body;
+  // const user = await ProfileModel.findOne({ username: username });
   const newPost = await PostModel.create({
     text: text,
-    username: username,
-    profile: user._id,
+    profile: mongoose.Types.ObjectId(profileId),
   });
   res.status(200).send(newPost);
 });

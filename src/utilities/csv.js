@@ -1,7 +1,9 @@
-import { Transform } from "json2csv";
 import fs from "fs-extra";
 const { createReadStream } = fs;
 import { pipeline } from "stream";
+import json2csv from "json2csv";
+
+const parser = json2csv.Parser;
 
 export const createCSV = async (target, source) => {
   try {
@@ -17,9 +19,12 @@ export const createCSV = async (target, source) => {
       "updatedAt",
     ];
     const options = { fields };
-    const json2csv = new Transform(options);
+
+    const json2csvParser = new parser(options);
+    const csvData = json2csvParser.parse(jsonData);
+
     res.setHeader("Content-Disposition", `attachment; filename=export.csv`);
-    console.log(json2csv);
+    res.set("Content-Type", "text/csv");
 
     const sourceStream = createReadStream(source);
 

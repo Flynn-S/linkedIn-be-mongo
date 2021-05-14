@@ -7,6 +7,14 @@ import {
   modifyPost,
   uploadPostPic,
 } from '../controllers/posts.js';
+import {
+  likePost,
+  unlikePost,
+  getComments,
+  createComment,
+  deleteComment,
+  modifyComment,
+} from '../controllers/posts.js';
 import multerUpload from '../middlewares/pictures/pictureUpload.js';
 const upload = multerUpload();
 
@@ -22,5 +30,16 @@ router
   .delete(deletePost)
   .post(upload, uploadPostPic);
 // GET singular Post // edit post // delete post // upload post picture
+
+// likes
+router.route('/:postId/like').post(likePost).delete(unlikePost);
+
+// comments
+router.route('/:postId/comment').get(getComments).post(createComment);
+
+router
+  .route('/:postId/comment/:commentId')
+  .delete(deleteComment)
+  .put(modifyComment);
 
 export default router;

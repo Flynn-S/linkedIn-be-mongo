@@ -75,3 +75,41 @@ export const uploadPostPic = asyncHandler(async (req, res, next) => {
   );
   res.send(modPost);
 });
+
+// comments
+
+// - POST https://striveschool-api.herokuapp.com/api/posts/:postId/like
+// Like the post for current user (each user can like only once per post)
+export const likePost = asyncHandler(async (req, res, next) => {
+  res.send('likePost');
+});
+
+// - DELETE https://striveschool-api.herokuapp.com/api/posts/:postId/like
+// Remove the like for current user
+export const unlikePost = asyncHandler(async (req, res, next) => {
+  res.send('unlikePost');
+});
+
+// - GET https://striveschool-api.herokuapp.com/api/posts/:postId/comment
+// Retrieve the list of comments for a given post
+export const getComments = asyncHandler(async (req, res, next) => {
+  res.send('getComments');
+});
+
+// - POST https://striveschool-api.herokuapp.com/api/posts/:postId/comment
+// Create the a new comment for a given post
+export const createComment = asyncHandler(async (req, res, next) => {
+  res.send('createComment');
+});
+
+// - DELETE https://striveschool-api.herokuapp.com/api/posts/:postId/comment/:commentId
+// Deletes a given comment
+export const deleteComment = asyncHandler(async (req, res, next) => {
+  res.send('deleteComment');
+});
+
+// - PUT https://striveschool-api.herokuapp.com/api/posts/:postId/comment/:commentId
+// Edit a given comment
+export const modifyComment = asyncHandler(async (req, res, next) => {
+  res.send('modifyComment');
+});

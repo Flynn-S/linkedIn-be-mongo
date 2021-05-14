@@ -42,9 +42,6 @@ router
   .delete(deleteComment)
   .put(modifyComment);
 
-router
-  .route('/comments/:commentId')
-
-  .put(modifyComment);
+router.route('/comments/:commentId').put(modifyComment);
 
 export default router;

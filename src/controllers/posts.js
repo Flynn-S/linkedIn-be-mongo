@@ -143,7 +143,7 @@ export const deleteComment = asyncHandler(async (req, res, next) => {
   res.status(200).send('deleted');
 });
 
-// - PUT https://striveschool-api.herokuapp.com/api/posts/:postId/comment/:commentId
+// - PUT https://striveschool-api.herokuapp.com/api/posts/comments/:commentId
 // Edit a given comment
 export const modifyComment = asyncHandler(async (req, res, next) => {
   const { postId, commentId } = req.params;

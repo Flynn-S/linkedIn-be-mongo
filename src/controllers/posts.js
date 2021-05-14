@@ -1,6 +1,7 @@
 import asyncHandler from '../utilities/asyncHandler.js';
 import PostModel from '../models/Post.js';
 import ProfileModel from '../models/Profile.js';
+import CommentModel from '../models/Comment.js';
 import mongoose from 'mongoose';
 
 //  - GET https://yourapi.herokuapp.com/api/posts/
@@ -11,7 +12,22 @@ export const getPosts = asyncHandler(async (req, res, next) => {
       path: 'profile',
       model: ProfileModel,
     })
+    .populate({
+      path: 'comments',
+      ref: CommentModel,
+      populate: [{ path: 'userWhoCommented', model: ProfileModel }],
+    })
     .sort({ createdAt: -1 });
+  // const posts = await PostModel.find()
+  //   .populate({
+  //     path: 'profile',
+  //     model: ProfileModel,
+  //   })
+  //   .populate({
+  //     path: 'comment',
+  //     model: CommentModel,
+  //   })
+  //   .sort({ createdAt: -1 });
   res.send(posts);
 });
 
@@ -99,17 +115,46 @@ export const getComments = asyncHandler(async (req, res, next) => {
 // - POST https://striveschool-api.herokuapp.com/api/posts/:postId/comment
 // Create the a new comment for a given post
 export const createComment = asyncHandler(async (req, res, next) => {
-  res.send('createComment');
+  const newComment = await CommentModel.create({
+    comment: req.body.comment,
+    userWhoCommented: mongoose.Types.ObjectId(req.body.userWhoCommented),
+    post: mongoose.Types.ObjectId(req.params.postId),
+  });
+  const { _id } = newComment;
+  const modifiedPost = await PostModel.findByIdAndUpdate(req.params.postId, {
+    $push: {
+      comments: _id,
+    },
+  });
+  res.status(200).send(newComment);
 });
 
 // - DELETE https://striveschool-api.herokuapp.com/api/posts/:postId/comment/:commentId
 // Deletes a given comment
 export const deleteComment = asyncHandler(async (req, res, next) => {
-  res.send('deleteComment');
+  const { postId, commentId } = req.params;
+  console.log(postId, commentId);
+  await CommentModel.findByIdAndDelete(commentId);
+  await PostModel.findByIdAndUpdate(postId, {
+    $pull: {
+      comments: { _id: mongoose.Types.ObjectId(commentId) },
+    },
+  });
+  res.status(200).send('deleted');
 });
 
 // - PUT https://striveschool-api.herokuapp.com/api/posts/:postId/comment/:commentId
 // Edit a given comment
 export const modifyComment = asyncHandler(async (req, res, next) => {
-  res.send('modifyComment');
+  const { postId, commentId } = req.params;
+  console.log(postId, commentId);
+  const modified = await CommentModel.findByIdAndUpdate(
+    commentId,
+    {
+      ...req.body,
+    },
+    { runValidators: true, new: true }
+  );
+
+  res.status(200).send(modified);
 });

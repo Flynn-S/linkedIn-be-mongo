@@ -8,9 +8,22 @@ export const PostSchema = new Schema(
     image: {
       type: String,
     },
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   },
   { timestamps: true }
+  // {
+  //   toJSON: { virtuals: true },
+  //   toObject: { virtuals: true },
+  // }
 );
+
+//  Reverse populate with virtuals
+// PostSchema.virtual('comments', {
+//   ref: 'Comment',
+//   localField: '_id',
+//   foreignField: 'post',
+//   justOne: false,
+// });
 
 export default model('Post', PostSchema);
 

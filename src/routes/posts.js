@@ -35,11 +35,16 @@ router
 router.route('/:postId/like').post(likePost).delete(unlikePost);
 
 // comments
-router.route('/:postId/comment').get(getComments).post(createComment);
+router.route('/:postId/comments').get(getComments).post(createComment);
 
 router
-  .route('/:postId/comment/:commentId')
+  .route('/:postId/comments/:commentId')
   .delete(deleteComment)
+  .put(modifyComment);
+
+router
+  .route('/comments/:commentId')
+
   .put(modifyComment);
 
 export default router;

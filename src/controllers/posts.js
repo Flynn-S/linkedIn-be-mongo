@@ -2,6 +2,7 @@ import asyncHandler from '../utilities/asyncHandler.js';
 import PostModel from '../models/Post.js';
 import ProfileModel from '../models/Profile.js';
 import CommentModel from '../models/Comment.js';
+import LikeModel from '../models/Like.js';
 import mongoose from 'mongoose';
 
 //  - GET https://yourapi.herokuapp.com/api/posts/
@@ -97,7 +98,21 @@ export const uploadPostPic = asyncHandler(async (req, res, next) => {
 // - POST https://striveschool-api.herokuapp.com/api/posts/:postId/like
 // Like the post for current user (each user can like only once per post)
 export const likePost = asyncHandler(async (req, res, next) => {
-  res.send('likePost');
+  const newLike = await LikeModel.create({
+    userWhoLiked: mongoose.Types.ObjectId(req.body.userWhoLiked),
+    post: mongoose.Types.ObjectId(req.params.postId),
+  });
+  const { _id } = newLike;
+  const modifiedPost = await PostModel.findByIdAndUpdate(
+    req.params.postId,
+    {
+      $push: {
+        likes: _id,
+      },
+    },
+    { runValidators: true, new: true }
+  );
+  res.send(modifiedPost);
 });
 
 // - DELETE https://striveschool-api.herokuapp.com/api/posts/:postId/like

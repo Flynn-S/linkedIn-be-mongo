@@ -126,7 +126,11 @@ export const unlikePost = asyncHandler(async (req, res, next) => {
 export const getComments = asyncHandler(async (req, res, next) => {
   const comments = await CommentModel.find({
     post: mongoose.Types.ObjectId(req.params.postId),
+  }).populate({
+    path: 'userWhoCommented',
+    model: ProfileModel,
   });
+
   res.status(200).send(comments);
 });
 

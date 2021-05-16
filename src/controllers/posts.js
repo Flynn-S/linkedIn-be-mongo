@@ -121,13 +121,16 @@ export const unlikePost = asyncHandler(async (req, res, next) => {
   res.send('unlikePost');
 });
 
-// - GET https://striveschool-api.herokuapp.com/api/posts/:postId/comment
+// - GET https://striveschool-api.herokuapp.com/api/posts/:postId/comments
 // Retrieve the list of comments for a given post
 export const getComments = asyncHandler(async (req, res, next) => {
-  res.send('getComments');
+  const comments = await CommentModel.find({
+    post: mongoose.Types.ObjectId(req.params.postId),
+  });
+  res.status(200).send(comments);
 });
 
-// - POST https://striveschool-api.herokuapp.com/api/posts/:postId/comment
+// - POST https://striveschool-api.herokuapp.com/api/posts/:postId/comments
 // Create the a new comment for a given post
 export const createComment = asyncHandler(async (req, res, next) => {
   const newComment = await CommentModel.create({

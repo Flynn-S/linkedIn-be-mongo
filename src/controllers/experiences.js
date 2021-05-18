@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 import ExperienceModel from "../models/Experience.js";
 import ProfileModel from "../models/Profile.js";
 import ErrorResponse from "../utilities/errorResponse.js";
-import { createCSV } from "../utilities/csv.js";
+// import { createCSV } from "../utilities/csv.js";
 
-import fs from "fs-extra";
+// import fs from "fs-extra";
 
-import json2csv from "json2csv";
+// import json2csv from "json2csv";
 
 // - GET https://yourapi.herokuapp.com/api/profile/:profileId/experiences
 // Get user experiences
@@ -107,33 +107,33 @@ export const uploadExperiencePic = asyncHandler(async (req, res, next) => {
 
 // - GET https://yourapi.herokuapp.com/api/profile/userName/experiences/CSV
 // Download the experiences as a CSV
-export const getExperciencesCSV = asyncHandler(async (req, res, next) => {
-  const allUserExperiences = await ExperienceModel.find({
-    profileId: { $eq: req.params.profileId },
-  });
-  const jsonExpData = JSON.parse(JSON.stringify(allUserExperiences));
-  console.log(jsonExpData);
+// export const getExperciencesCSV = asyncHandler(async (req, res, next) => {
+//   const allUserExperiences = await ExperienceModel.find({
+//     profileId: { $eq: req.params.profileId },
+//   });
+//   const jsonExpData = JSON.parse(JSON.stringify(allUserExperiences));
+//   console.log(jsonExpData);
 
-  const fields = [
-    "role",
-    "company",
-    "startDate",
-    "endDate",
-    "description",
-    "area",
-    "profileId",
-    "createdAt",
-    "updatedAt",
-  ];
-  const options = { fields };
-  const parser = json2csv.Parser;
-  const json2csvParser = new parser(options);
-  const csvData = json2csvParser.parse(jsonData);
+//   const fields = [
+//     "role",
+//     "company",
+//     "startDate",
+//     "endDate",
+//     "description",
+//     "area",
+//     "profileId",
+//     "createdAt",
+//     "updatedAt",
+//   ];
+//   const options = { fields };
+//   const parser = json2csv.Parser;
+//   const json2csvParser = new parser(options);
+//   const csvData = json2csvParser.parse(jsonData);
 
-  res.setHeader("Content-Disposition", `attachment; filename=export.csv`);
-  res.set("Content-Type", "text/csv");
-  //   res.attachment("experience.csv");
+//   res.setHeader("Content-Disposition", `attachment; filename=export.csv`);
+//   res.set("Content-Type", "text/csv");
+//   //   res.attachment("experience.csv");
 
-  res.set("Content-Type", "text/csv");
-  res.status(200).end(csvData);
-});
+//   res.set("Content-Type", "text/csv");
+//   res.status(200).end(csvData);
+// });

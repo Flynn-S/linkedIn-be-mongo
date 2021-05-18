@@ -1,22 +1,22 @@
-import asyncHandler from '../utilities/asyncHandler.js';
-import PostModel from '../models/Post.js';
-import ProfileModel from '../models/Profile.js';
-import CommentModel from '../models/Comment.js';
-import LikeModel from '../models/Like.js';
-import mongoose from 'mongoose';
+import asyncHandler from "../utilities/asyncHandler.js";
+import PostModel from "../models/Post.js";
+import ProfileModel from "../models/Profile.js";
+import CommentModel from "../models/Comment.js";
+import LikeModel from "../models/Like.js";
+import mongoose from "mongoose";
 
 //  - GET https://yourapi.herokuapp.com/api/posts/
 // Retrieve posts
 export const getPosts = asyncHandler(async (req, res, next) => {
   const posts = await PostModel.find()
     .populate({
-      path: 'profile',
+      path: "profile",
       model: ProfileModel,
     })
     .populate({
-      path: 'comments',
+      path: "comments",
       ref: CommentModel,
-      populate: [{ path: 'userWhoCommented', model: ProfileModel }],
+      populate: [{ path: "userWhoCommented", model: ProfileModel }],
     })
     .sort({ createdAt: -1 });
   // const posts = await PostModel.find()
@@ -118,13 +118,13 @@ export const likePost = asyncHandler(async (req, res, next) => {
 // - DELETE https://striveschool-api.herokuapp.com/api/posts/:postId/like
 // Remove the like for current user
 export const unlikePost = asyncHandler(async (req, res, next) => {
-  res.send('unlikePost');
+  res.send("unlikePost");
 });
 
 // - GET https://striveschool-api.herokuapp.com/api/posts/:postId/comment
 // Retrieve the list of comments for a given post
 export const getComments = asyncHandler(async (req, res, next) => {
-  res.send('getComments');
+  res.send("getComments");
 });
 
 // - POST https://striveschool-api.herokuapp.com/api/posts/:postId/comment
@@ -155,7 +155,7 @@ export const deleteComment = asyncHandler(async (req, res, next) => {
       comments: { _id: mongoose.Types.ObjectId(commentId) },
     },
   });
-  res.status(200).send('deleted');
+  res.status(200).send("deleted");
 });
 
 // - PUT https://striveschool-api.herokuapp.com/api/posts/comments/:commentId

@@ -58,8 +58,11 @@ const ProfileSchema = new Schema(
 
 // encrypt password using bcrypt
 ProfileSchema.pre('save', async function (next) {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.isModified('password')) {
+    //risparmio tempo sull'hash  l'user vuole modficare solo altri campi
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
   next();
 });
 

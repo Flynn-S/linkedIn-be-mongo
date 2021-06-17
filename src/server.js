@@ -58,7 +58,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-// console.table(listEndpoints(app));
+console.table(listEndpoints(app));
 
 connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
